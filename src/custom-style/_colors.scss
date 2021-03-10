@@ -1,0 +1,45 @@
+// Primary Colors
+$lucid-blue: #4B7BEC;
+$shark: #262B2F;
+
+// Secondary Colors
+$candy-red: #eb4d4b;
+$tea-garden: #1dd1a1;
+$sunburn: #fdcb6e;
+$corporate-affairs: #54a0ff;
+$subtle-flex: #ff9ff3;
+$vacation: #f19066;
+
+// Light Greys
+$baby-powder: #fff;
+$white-lilac: #f2f2f4;
+$flat-metal: #e0e0e2;
+$ghost: #c7c7c9;
+$pebble: #b3b3bc;
+
+// Dark Greys
+$cinder: #1E1E21;
+$cinder-light: #3A4147;
+$abbey: #4b4b53;
+$dolphin: #6c6c76;
+$topaz: #87878e;
+
+// Gradients
+$dream-sky: linear-gradient($lucid-blue, #ad7fe0);
+$clear-night: linear-gradient($shark, #545458);
+$dark-fade-top: linear-gradient(rgba(30,30,33,0.0), $cinder);
+
+// bootstrap override
+$body-bg: $cinder;
+$body-color: $baby-powder;
+
+$theme-colors: (
+  "primary": $lucid-blue,
+	"secondary": $shark,
+  "danger": $candy-red,
+	"success": $tea-garden,
+	"warning": $sunburn,
+	"info": $corporate-affairs,
+	"light": $white-lilac,
+	"dark": $cinder
+);
