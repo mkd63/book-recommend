@@ -63,6 +63,12 @@ export default function Login(props) {
   return (
     <div className={classes.root}>
       <div className={classes.container}>
+        <Button
+          className={classes.homeButton}
+          onClick={() => props.history.push("/")}
+        >
+          Home
+        </Button>
         <div className={classes.loginBox}>
           <h3 className={classes.textHead1}>Welcome to MyBooks</h3>
           <h4 className={classes.textHead2}>
@@ -88,7 +94,6 @@ export default function Login(props) {
                 label="Email"
                 type="email"
                 autoComplete="current-email"
-                margin="normal"
                 onChange={(e) => setEmail(e.target.value)}
                 style={{ color: "#fff" }}
                 InputLabelProps={{
@@ -225,6 +230,17 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 
+  homeButton: {
+    position: "absolute",
+    top: 20,
+    right: 20,
+    backgroundColor: "#fe9505",
+    color: "#D5D5D5",
+    "&:hover": {
+      color: "#fe9505",
+      backgroundColor: "#D5D5D5",
+    },
+  },
   error: {
     color: "red",
   },
