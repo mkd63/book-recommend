@@ -1,25 +1,25 @@
-import React, { Children } from 'react'
+import React, { Children } from "react";
 
 export interface ICarouselProps {
   /**
    * Items that going to be showed
    */
-  children: React.ReactNode
+  children: React.ReactNode;
 
   /**
    * Indicate how many to show at once
    */
-  show: number
+  show: number;
 
   /**
    * Is the carousel will be repeating
    */
-  infiniteLoop?: boolean
+  infiniteLoop?: boolean;
 
   /**
    * Render with indicator
    */
-  withIndicator?: boolean
+  withIndicator?: boolean;
 
   /**
    * Render custom previous button
@@ -39,7 +39,7 @@ export interface ICarouselProps {
   renderPreviousButton?: (
     previousItem: () => void,
     defaultClass?: string
-  ) => JSX.Element
+  ) => JSX.Element;
 
   /**
    * Render custom next button
@@ -59,57 +59,57 @@ export interface ICarouselProps {
   renderNextButton?: (
     nextItem: () => void,
     defaultClassName?: string
-  ) => JSX.Element
+  ) => JSX.Element;
 
   /**
    * additional className for container element
    */
-  containerClassName?: string
+  containerClassName?: string;
 
   /**
    * props for container element, be aware that if you supply className props here, it will overwrite the default one
    */
-  containerProps?: React.HTMLProps<HTMLDivElement>
+  containerProps?: React.HTMLProps<HTMLDivElement>;
 
   /**
    * additional className for wrapper element
    */
-  wrapperClassName?: string
+  wrapperClassName?: string;
 
   /**
    * props for wrapper element, be aware that if you supply className props here, it will overwrite the default one
    */
-  wrapperProps?: React.HTMLProps<HTMLDivElement>
+  wrapperProps?: React.HTMLProps<HTMLDivElement>;
 
   /**
    * additional className for content wrapper element
    */
-  contentWrapperClassName?: string
+  contentWrapperClassName?: string;
 
   /**
    * props for content wrapper element, be aware that if you supply className props here, it will overwrite the default one
    */
-  contentWrapperProps?: React.HTMLProps<HTMLDivElement>
+  contentWrapperProps?: React.HTMLProps<HTMLDivElement>;
 
   /**
    * additional className for content element
    */
-  contentClassName?: string
+  contentClassName?: string;
 
   /**
    * props for content element, be aware that if you supply className props here, it will overwrite the default one
    */
-  contentProps?: React.HTMLProps<HTMLDivElement>
+  contentProps?: React.HTMLProps<HTMLDivElement>;
 
   /**
    * Classname for indicator container
    */
-  indicatorContainerClassName?: string
+  indicatorContainerClassName?: string;
 
   /**
    * props for indicator container element, be aware that if you supply className and ref props here, it will overwrite the default one
    */
-  indicatorContainerProps?: React.HTMLProps<HTMLDivElement>
+  indicatorContainerProps?: React.HTMLProps<HTMLDivElement>;
 
   /**
    * className for each classes in the indicator,
@@ -118,10 +118,10 @@ export interface ICarouselProps {
    * far: item that far from current item
    */
   indicatorClassNames?: {
-    active?: string
-    close?: string
-    far?: string
-  }
+    active?: string;
+    close?: string;
+    far?: string;
+  };
 
   /**
    * Render custom dot element
@@ -137,45 +137,61 @@ export interface ICarouselProps {
    *   ...
    * </Carousel>
    */
-  renderDot?: (
-    index: number,
-    defaultClassName: string
-  ) => JSX.Element
+  renderDot?: (index: number, defaultClassName: string) => JSX.Element;
 }
 
 const Carousel = ({
-  children, show, infiniteLoop, withIndicator,
-  renderPreviousButton, renderNextButton,
-  containerClassName, wrapperClassName, contentWrapperClassName, contentClassName,
-  containerProps, wrapperProps, contentWrapperProps, contentProps,
-  indicatorContainerClassName, indicatorContainerProps, indicatorClassNames,
+  children,
+  show,
+  infiniteLoop,
+  withIndicator,
+  renderPreviousButton,
+  renderNextButton,
+  containerClassName,
+  wrapperClassName,
+  contentWrapperClassName,
+  contentClassName,
+  containerProps,
+  wrapperProps,
+  contentWrapperProps,
+  contentProps,
+  indicatorContainerClassName,
+  indicatorContainerProps,
+  indicatorClassNames,
 }: ICarouselProps): JSX.Element => {
-  const indicatorContainerRef = React.useRef<HTMLDivElement>(null)
+  const indicatorContainerRef = React.useRef<HTMLDivElement>(null);
 
   /**
    * Total item
    */
-  const length = React.useMemo(() => Children.count(children), [children])
+  const length = React.useMemo(() => Children.count(children), [children]);
 
   /**
    * Is the carousel repeating it's item
    */
-  const isRepeating = React.useMemo(() => infiniteLoop && Children.count(children) > show, [children, infiniteLoop, show])
+  const isRepeating = React.useMemo(
+    () => infiniteLoop && Children.count(children) > show,
+    [children, infiniteLoop, show]
+  );
 
   /**
    * Current Index Item of the Carousel
    */
-  const [currentIndex, setCurrentIndex] = React.useState<number>(isRepeating ? show : 0)
+  const [currentIndex, setCurrentIndex] = React.useState<number>(
+    isRepeating ? show : 0
+  );
 
   /**
    * Is the carousel's transition enabled
    */
-  const [isTransitionEnabled, setTransitionEnabled] = React.useState<boolean>(true)
+  const [isTransitionEnabled, setTransitionEnabled] = React.useState<boolean>(
+    true
+  );
 
   /**
    * First touch position to be used in calculation for the swipe speed
    */
-  const [touchPosition, setTouchPosition] = React.useState<null | number>(null)
+  const [touchPosition, setTouchPosition] = React.useState<null | number>(null);
 
   /**
    * Handle if the carousel is repeating
@@ -184,43 +200,45 @@ const Carousel = ({
   React.useEffect(() => {
     if (isRepeating) {
       if (currentIndex === show || currentIndex === length) {
-        setTransitionEnabled(true)
+        setTransitionEnabled(true);
       }
     }
-  }, [currentIndex, isRepeating, show, length])
+  }, [currentIndex, isRepeating, show, length]);
 
   React.useEffect(() => {
     if (withIndicator) {
-      const active = indicatorContainerRef.current?.querySelector('.dots-active')
+      const active = indicatorContainerRef.current?.querySelector(
+        ".dots-active"
+      );
       if (active) {
-        let index = active.getAttribute('data-index')
+        let index = active.getAttribute("data-index");
         if (index !== null && indicatorContainerRef.current?.scrollTo) {
           indicatorContainerRef.current?.scrollTo({
             left: ((Number(index) - 2) / 5) * 50,
-            behavior: 'smooth',
-          })
+            behavior: "smooth",
+          });
         }
       }
     }
-  }, [withIndicator, currentIndex])
+  }, [withIndicator, currentIndex]);
 
   /**
    * Move forward to the next item
    */
   const nextItem = () => {
-    if (isRepeating || currentIndex < (length - show)) {
-      setCurrentIndex(prevState => prevState + 1)
+    if (isRepeating || currentIndex < length - show) {
+      setCurrentIndex((prevState) => prevState + 2);
     }
-  }
+  };
 
   /**
    * Move backward to the previous item
    */
   const previousItem = () => {
     if (isRepeating || currentIndex > 0) {
-      setCurrentIndex(prevState => prevState - 1)
+      setCurrentIndex((prevState) => prevState - 2);
     }
-  }
+  };
 
   /**
    * Handle when the user start the swipe gesture
@@ -228,9 +246,9 @@ const Carousel = ({
    */
   const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
     // Save the first position of the touch
-    const touchDown = e.touches[0].clientX
-    setTouchPosition(touchDown)
-  }
+    const touchDown = e.touches[0].clientX;
+    setTouchPosition(touchDown);
+  };
 
   /**
    * Handle when the user move the finger in swipe gesture
@@ -238,32 +256,32 @@ const Carousel = ({
    */
   const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
     // Get initial location
-    const touchDown = touchPosition
+    const touchDown = touchPosition;
 
     // Proceed only if the initial position is not null
     if (touchDown === null) {
-      return
+      return;
     }
 
     // Get current position
-    const currentTouch = e.touches[0].clientX
+    const currentTouch = e.touches[0].clientX;
 
     // Get the difference between previous and current position
-    const diff = touchDown - currentTouch
+    const diff = touchDown - currentTouch;
 
     // Go to next item
     if (diff > 5) {
-      nextItem()
+      nextItem();
     }
 
     // Go to previous item
     if (diff < -5) {
-      previousItem()
+      previousItem();
     }
 
     // Reset initial touch position
-    setTouchPosition(null)
-  }
+    setTouchPosition(null);
+  };
 
   /**
    * Handle when carousel transition's ended
@@ -271,94 +289,94 @@ const Carousel = ({
   const handleTransitionEnd = () => {
     if (isRepeating) {
       if (currentIndex === 0) {
-        setTransitionEnabled(false)
-        setCurrentIndex(length)
+        setTransitionEnabled(false);
+        setCurrentIndex(length);
       } else if (currentIndex === length + show) {
-        setTransitionEnabled(false)
-        setCurrentIndex(show)
+        setTransitionEnabled(false);
+        setCurrentIndex(show);
       }
     }
-  }
+  };
 
   /**
    * Render previous items before the first item
    */
   const extraPreviousItems = React.useMemo(() => {
-    let output = []
+    let output = [];
     for (let index = 0; index < show; index++) {
-      output.push(Children.toArray(children)[length - 1 - index])
+      output.push(Children.toArray(children)[length - 1 - index]);
     }
-    output.reverse()
-    return output
-  }, [children, length, show])
+    output.reverse();
+    return output;
+  }, [children, length, show]);
 
   /**
    * Render next items after the last item
    */
   const extraNextItems = React.useMemo(() => {
-    let output = []
+    let output = [];
     for (let index = 0; index < show; index++) {
-      output.push(Children.toArray(children)[index])
+      output.push(Children.toArray(children)[index]);
     }
-    return output
-  }, [children, show])
+    return output;
+  }, [children, show]);
 
   const renderDots = React.useMemo(() => {
-    let output = []
+    let output = [];
 
-    const localShow = isRepeating ? show : 0
-    const localLength = isRepeating ? length : Math.ceil(length / show)
-    const calculatedActiveIndex = (currentIndex - localShow) < 0 ? (length + (currentIndex - localShow)) : currentIndex - localShow
+    const localShow = isRepeating ? show : 0;
+    const localLength = isRepeating ? length : Math.ceil(length / show);
+    const calculatedActiveIndex =
+      currentIndex - localShow < 0
+        ? length + (currentIndex - localShow)
+        : currentIndex - localShow;
 
     for (let index = 0; index < localLength; index++) {
-      let className = ''
+      let className = "";
       if (calculatedActiveIndex === index) {
-        className = indicatorClassNames?.active || 'dots-active'
+        className = indicatorClassNames?.active || "dots-active";
       } else {
         if (calculatedActiveIndex === 0) {
           if (calculatedActiveIndex + index <= 2) {
-            className = indicatorClassNames?.close || 'dots-close'
+            className = indicatorClassNames?.close || "dots-close";
           } else {
-            className = indicatorClassNames?.far || 'dots-far'
+            className = indicatorClassNames?.far || "dots-far";
           }
         } else if (calculatedActiveIndex === localLength - 1) {
           if (Math.abs(calculatedActiveIndex - index) <= 2) {
-            className = indicatorClassNames?.close || 'dots-close'
+            className = indicatorClassNames?.close || "dots-close";
           } else {
-            className = indicatorClassNames?.far || 'dots-far'
+            className = indicatorClassNames?.far || "dots-far";
           }
         } else {
           if (Math.abs(calculatedActiveIndex - index) === 1) {
-            className = indicatorClassNames?.close || 'dots-close'
+            className = indicatorClassNames?.close || "dots-close";
           } else {
-            className = indicatorClassNames?.far || 'dots-far'
+            className = indicatorClassNames?.far || "dots-far";
           }
         }
       }
-      output.push(
-        <div key={index} data-index={index} className={className} />
-      )
+      output.push(<div key={index} data-index={index} className={className} />);
     }
 
-    return output
-  }, [currentIndex, indicatorClassNames, isRepeating, length, show])
+    return output;
+  }, [currentIndex, indicatorClassNames, isRepeating, length, show]);
 
   return (
     <div
       data-testid="carousel-container"
-      className={`carousel-container ${containerClassName || ''}`}
+      className={`carousel-container ${containerClassName || ""}`}
       {...containerProps}
     >
       <div
         data-testid="carousel-wrapper"
-        className={`carousel-wrapper ${wrapperClassName || ''}`}
+        className={`carousel-wrapper ${wrapperClassName || ""}`}
         {...wrapperProps}
       >
-        {
-          (isRepeating || currentIndex > 0) ?
-            renderPreviousButton ?
-            renderPreviousButton(previousItem, 'left-arrow-button')
-            :
+        {isRepeating || currentIndex > 0 ? (
+          renderPreviousButton ? (
+            renderPreviousButton(previousItem, "left-arrow-button")
+          ) : (
             <button
               data-testid="left-button"
               onClick={previousItem}
@@ -366,41 +384,38 @@ const Carousel = ({
             >
               <span className="left-arrow" />
             </button>
-          : null
-        }
+          )
+        ) : null}
         <div
           data-testid="carousel-content-wrapper"
-          className={`carousel-content-wrapper ${contentWrapperClassName || ''}`}
+          className={`carousel-content-wrapper ${
+            contentWrapperClassName || ""
+          }`}
           {...contentWrapperProps}
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
         >
           <div
             data-testid="carousel-content"
-            className={`carousel-content show-${show} ${contentClassName || ''}`}
+            className={`carousel-content show-${show} ${
+              contentClassName || ""
+            }`}
             {...contentProps}
             style={{
               transform: `translateX(-${currentIndex * (100 / show)}%)`,
-              transition: !isTransitionEnabled ? 'none' : undefined,
+              transition: !isTransitionEnabled ? "none" : undefined,
             }}
             onTransitionEnd={() => handleTransitionEnd()}
           >
-            {
-              (length > show && isRepeating) &&
-              extraPreviousItems
-            }
+            {length > show && isRepeating && extraPreviousItems}
             {children}
-            {
-              (length > show && isRepeating) &&
-              extraNextItems
-            }
+            {length > show && isRepeating && extraNextItems}
           </div>
         </div>
-        {
-          (isRepeating || currentIndex < (length - show)) ?
-            renderNextButton ?
-            renderNextButton(nextItem, 'right-arrow-button')
-            :
+        {isRepeating || currentIndex < length - show ? (
+          renderNextButton ? (
+            renderNextButton(nextItem, "right-arrow-button")
+          ) : (
             <button
               data-testid="right-button"
               onClick={nextItem}
@@ -408,22 +423,21 @@ const Carousel = ({
             >
               <span className="right-arrow" />
             </button>
-          : null
-        }
+          )
+        ) : null}
       </div>
-      {
-        withIndicator &&
+      {withIndicator && (
         <div
           data-testid="indicator-container"
           ref={indicatorContainerRef}
-          className={`indicator-container ${indicatorContainerClassName || ''}`}
+          className={`indicator-container ${indicatorContainerClassName || ""}`}
           {...indicatorContainerProps}
         >
           {renderDots}
         </div>
-      }
+      )}
     </div>
-  )
-}
+  );
+};
 
-export default Carousel
+export default Carousel;
