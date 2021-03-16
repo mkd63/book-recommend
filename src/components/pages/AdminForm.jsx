@@ -19,6 +19,7 @@ import bookshelfBg from "../../assets/bookshelf-illustration.jpg";
 import { POST } from "../../actions/api";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
+import PictureUpload from "../picture-upload/ProfilePicture";
 
 export default function Register(props) {
   const classes = useStyles();
@@ -28,6 +29,7 @@ export default function Register(props) {
     author: "",
     genres: "",
     picture: "",
+    cropped_data: "",
     about_text: "",
     rating: 2,
   });
@@ -76,9 +78,10 @@ export default function Register(props) {
       genres: genres,
       about_text: formData.about_text,
       picture: formData.picture,
+      cropped_data: JSON.stringify(formData.cropped_data),
       rating: formData.rating,
     };
-
+    console.log("book", body);
     const response = await POST("/books", body);
     console.log("book added ", response);
   };
@@ -111,7 +114,7 @@ export default function Register(props) {
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <FormControl fullWidth>
-                  <InputLabel htmlFor="name">First Name</InputLabel>
+                  <InputLabel htmlFor="name">Name of the book</InputLabel>
 
                   <Input
                     id="name"
@@ -260,35 +263,7 @@ export default function Register(props) {
                 </Grid>
               )}
               <Grid item xs={12}>
-                <FormControl fullWidth error={displayError}>
-                  <InputLabel htmlFor="picture">Picture</InputLabel>
-
-                  <Input
-                    id="picture"
-                    label="Picture"
-                    type="text"
-                    value={formData.picture}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        picture: e.target.value,
-                      })
-                    }
-                    style={{ color: "#fff" }}
-                    InputLabelProps={{
-                      classes: {
-                        root: classes.cssLabel,
-                        focused: classes.cssFocused,
-                      },
-                    }}
-                    InputProps={{
-                      classes: {
-                        root: classes.cssOutlinedInput,
-                        focused: classes.cssFocused,
-                      },
-                    }}
-                  />
-                </FormControl>
+                <PictureUpload setData={setFormData} data={formData} />
               </Grid>
               <Grid item xs={12}>
                 <FormControl fullWidth>
@@ -362,7 +337,7 @@ const useStyles = makeStyles((theme) => ({
   loginBox: {
     width: 520,
     height: 650,
-    background: "rgba(38,219,28,0.84)",
+    background: "rgba(255, 140, 0, 0.84)",
     boxShadow: "0 3px 5px 2px rgba(0,0,0, .3)",
     display: "flex",
     flexDirection: "column",
