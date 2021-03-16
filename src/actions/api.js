@@ -3,11 +3,30 @@ export async function GET(endpoint, token) {
     const response = await fetch(
       `${process.env.REACT_APP_API_URL}${endpoint}/`,
       {
-        method: 'GET',
+        method: "GET",
         headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          Authorization: token ? `JWT ${token}` : '',
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: token ? `JWT ${token}` : "",
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function GETSEARCH(endpoint, token) {
+  try {
+    const response = await fetch(
+      `${process.env.REACT_APP_API_URL}${endpoint}`,
+      {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: token ? `JWT ${token}` : "",
         },
       }
     );
@@ -22,11 +41,11 @@ export async function POST(endpoint, body, token) {
     const response = await fetch(
       `${process.env.REACT_APP_API_URL}${endpoint}/`,
       {
-        method: 'POST',
+        method: "POST",
         headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          Authorization: token ? `JWT ${token}` : '',
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: token ? `JWT ${token}` : "",
         },
         body: JSON.stringify(body),
       }
@@ -42,11 +61,11 @@ export async function PATCH(endpoint, body, token) {
     const response = await fetch(
       `${process.env.REACT_APP_API_URL}${endpoint}/`,
       {
-        method: 'PATCH',
+        method: "PATCH",
         headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          Authorization: token ? `JWT ${token}` : '',
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: token ? `JWT ${token}` : "",
         },
         body: JSON.stringify(body),
       }
@@ -62,11 +81,11 @@ export async function DELETE(endpoint, token) {
     const response = await fetch(
       `${process.env.REACT_APP_API_URL}${endpoint}/`,
       {
-        method: 'DELETE',
+        method: "DELETE",
         headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          Authorization: token ? `JWT ${token}` : '',
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: token ? `JWT ${token}` : "",
         },
       }
     );
