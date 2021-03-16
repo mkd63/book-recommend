@@ -16,8 +16,19 @@ import {
   Link,
 } from "@material-ui/core";
 import bookshelfBg from "../../assets/bookshelf-illustration.jpg";
+import Chip from "@material-ui/core/Chip";
+import Autocomplete from "@material-ui/lab/Autocomplete";
 import { POST } from "../../actions/api";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
+
+const genreOptions = [
+  "mystery",
+  "fantasy",
+  "Comedy",
+  "Memoir",
+  "Historical Drama",
+  "Southern Gothic",
+];
 
 export default function Register(props) {
   const classes = useStyles();
@@ -48,7 +59,7 @@ export default function Register(props) {
     password: "",
     confirmPassword: "",
   });
-
+  const [genreSet, setGenreSet] = useState([]);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [displayError, setDisplayError] = useState(false);
@@ -91,7 +102,8 @@ export default function Register(props) {
   const handleRegister = async () => {
     validateForm();
     const body = formData;
-
+    body["preferred_genres"] = genreSet;
+    console.log(body);
     const response = await POST("/users", body);
     if (response.status > 300) {
     }
@@ -259,6 +271,35 @@ export default function Register(props) {
                 </FormControl>
               </Grid>
               <Grid item xs={12}>
+                <Autocomplete
+                  multiple
+                  id="tags-filled"
+                  options={genreOptions}
+                  freeSolo
+                  onChange={(event, newValue) => {
+                    setGenreSet(newValue);
+                  }}
+                  limitTags={2}
+                  renderTags={(value, getTagProps) =>
+                    value.map((option, index) => (
+                      <Chip
+                        variant="outlined"
+                        label={option}
+                        {...getTagProps({ index })}
+                      />
+                    ))
+                  }
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      variant="filled"
+                      label="Favorite Genres"
+                      placeholder="Favorite Genres"
+                    />
+                  )}
+                />
+              </Grid>
+              <Grid item xs={12}>
                 <FormControl fullWidth error={displayError}>
                   <InputLabel htmlFor="password">Password</InputLabel>
 
@@ -396,8 +437,8 @@ const useStyles = makeStyles((theme) => ({
   },
   loginBox: {
     width: 520,
-    height: 650,
-    background: "rgba(38,219,28,0.84)",
+    height: 700,
+    background: "rgba(255, 140, 0, 0.84)",
     boxShadow: "0 3px 5px 2px rgba(0,0,0, .3)",
     display: "flex",
     flexDirection: "column",

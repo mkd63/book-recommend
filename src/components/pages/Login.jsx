@@ -51,6 +51,7 @@ export default function Login(props) {
         userCrop: result.user.cropped_data,
         userIsSetup: result.user.is_setup,
       });
+      props.history.push("/");
     } else {
       setDisplayError(true);
     }
@@ -201,7 +202,7 @@ const useStyles = makeStyles((theme) => ({
   loginBox: {
     width: 520,
     height: 450,
-    background: "rgba(38,219,28,0.84)",
+    background: "rgba(255, 140, 0, 0.84)",
     boxShadow: "0 3px 5px 2px rgba(0,0,0, .3)",
     display: "flex",
     flexDirection: "column",
