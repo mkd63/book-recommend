@@ -9,6 +9,7 @@ import {
   Button,
   Paper,
 } from "@material-ui/core";
+import CarouselMUI from "react-material-ui-carousel";
 import { GlobalContext } from "../../context/GlobalContext";
 import { Link } from "@material-ui/core";
 import bookshelfBg from "../../assets/home-books-bg.jpg";
@@ -23,6 +24,7 @@ import { GETSEARCH, GET } from "../../actions/api";
 import Carousel from "../uiComponents/Carousel/Carousel";
 import "../uiComponents/Carousel/Carousel.css";
 import BookCard from "../uiComponents/BookCard";
+import BookCardLong from "../uiComponents/BookCardLong";
 
 export default function Home(props) {
   const classes = useStyles();
@@ -96,6 +98,24 @@ export default function Home(props) {
     );
   };
 
+  const renderCarouselMUI = () => {
+    return (
+      <CarouselMUI
+        animation="slide"
+        autoPlay={false}
+        className={classes.carousel}
+      >
+        {topRatedBooks.map((item) => (
+          <BookCardLong
+            book={item}
+            token={session.token}
+            history={props.history}
+          />
+        ))}
+      </CarouselMUI>
+    );
+  };
+
   return (
     <div className={classes.root}>
       <div className={classes.imageContainer}>
@@ -138,9 +158,9 @@ export default function Home(props) {
       {session.token && preferredGenresBooks.length > 0 && (
         <div className={classes.searchResults}>
           <Typography variant="h5">
-            Books recommended by your preferred_genres
+            Books recommended by your preferred genres
           </Typography>
-          <Grid container spacing={3}>
+          <Grid container spacing={3} style={{ marginTop: 40 }}>
             {preferredGenresBooks.map((item) => (
               <BookCard
                 book={item}
@@ -157,7 +177,18 @@ export default function Home(props) {
         <Grid
           container
           spacing={3}
-          style={{ marginTop: 20, marginBottom: 200, width: "100%" }}
+          style={{ marginTop: 40, marginBottom: 20, width: "100%" }}
+        >
+          {topRatedBooks.length > 0 && renderCarouselMUI()}
+        </Grid>
+      </div>
+
+      <div className={classes.searchResults}>
+        <Typography variant="h5">Top rated books</Typography>
+        <Grid
+          container
+          spacing={3}
+          style={{ marginTop: 40, marginBottom: 200, width: "100%" }}
         >
           {topRatedBooks.length > 0 && renderCarousel()}
         </Grid>
@@ -203,5 +234,8 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 50,
     paddingLeft: 80,
     paddingRight: 80,
+  },
+  carousel: {
+    width: "100%",
   },
 }));
