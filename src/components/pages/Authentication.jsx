@@ -7,8 +7,8 @@ import { Link } from "@material-ui/core";
 import Home from "./Home";
 import bookLogo from "../../assets/book.png";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
+import { Menu, MenuItem, MenuButton } from "@szhsin/react-menu";
+import "@szhsin/react-menu/dist/index.css";
 import { POST } from "../../actions/api";
 import {
   Dropdown,
@@ -55,22 +55,27 @@ export default function Authentication(props) {
     }
   };
   const menuId = "primary-search-account-menu";
-  const renderMenu = (
-    <Menu
-      style={{ top: -295 }}
-      anchorEl={anchorEl}
-      anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{ vertical: "top", horizontal: "right" }}
-      open={isMenuOpen}
-      onClose={handleClose}
-    >
-      <MenuItem onClick={handleClose}>Profile</MenuItem>
-      <MenuItem onClick={handleClose}>My account</MenuItem>
-      <MenuItem onClick={handleLogout}>Logout</MenuItem>
-    </Menu>
-  );
+  const renderMenu = () => {
+    return (
+      <Menu
+        menuButton={
+          <Button
+            aria-controls={menuId}
+            aria-haspopup="true"
+            onClick={() => setAnchorEl(true)}
+            startIcon={<AccountCircleIcon />}
+            style={{ marginLeft: 14 }}
+          >
+            {session.userFirstName + " " + session.userLastName}
+          </Button>
+        }
+      >
+        <MenuItem>Profile</MenuItem>
+        <MenuItem>My account</MenuItem>
+        <MenuItem onClick={handleLogout}>Logout</MenuItem>
+      </Menu>
+    );
+  };
   useEffect(() => {
     console.log(process.env.REACT_APP_API_KEY, process.env.REACT_APP_API_URL);
     fetch(
@@ -149,18 +154,7 @@ export default function Authentication(props) {
               </Link>
             </div>
           ) : (
-            <div>
-              <Button
-                aria-controls={menuId}
-                aria-haspopup="true"
-                onClick={() => setAnchorEl(true)}
-                startIcon={<AccountCircleIcon />}
-                style={{ marginLeft: 14 }}
-              >
-                {session.userFirstName + " " + session.userLastName}
-              </Button>
-              {renderMenu}
-            </div>
+            <div>{renderMenu()}</div>
           )}
         </div>
       </div>
