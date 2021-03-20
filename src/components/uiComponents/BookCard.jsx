@@ -18,37 +18,99 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import { GlobalContext } from "../../context/GlobalContext";
 import { Link } from "@material-ui/core";
 import bookSample from "../../assets/book-sample.png";
-import { PATCH } from "../../actions/api";
+import { PATCH, POST, GET } from "../../actions/api";
 import Rating from "@material-ui/lab/Rating";
 import BookPicture from "../picture-upload/UserPicture";
+import googleBooks from "../../assets/google_books.png";
 import Carousel from "./Carousel/Carousel";
 import "./Carousel/Carousel.css";
+import StarIcon from "@material-ui/icons/Star";
 
 export default function BookCard(props) {
   const [book] = useState(props.book);
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [openRated, setOpenRated] = useState(false);
   const classes = useStyles();
   const handleClickOpen = () => {
     setOpen(true);
   };
-
+  const handleClickOpenRated = () => {
+    setOpenRated(true);
+  };
+  const [userRating, setUserRating] = useState(null);
+  const [bookRated, setBookRated] = useState(null);
   const handleClose = () => {
     setOpen(false);
   };
+  const handleCloseRated = () => {
+    setOpenRated(false);
+  };
 
-  const handleRating = async (v) => {
+  const handlePatchBookRating = async (v) => {
     const response = await PATCH(`/books/books_rating_patch`, {
       id: book.id,
       rating: v,
       token: props.token,
     });
     const result = await response.json();
-    console.log(result, response);
+    console.log(result);
     if (response.status === 401) {
       handleClickOpen();
     }
   };
 
+  useEffect(() => {
+    handleCheckBookRated();
+  }, []);
+
+  const handleCheckBookRated = async () => {
+    if (props.userId) {
+      //?user_id=${props.userId}&book_id=${book.id}
+      const response = await POST(
+        `/ratings/user_book_rated`,
+        {
+          user_id: props.userId,
+          book_id: book.id,
+        },
+        props.token
+      );
+      const result = await response.json();
+      if (response.status === 200) {
+        setUserRating(result[0].fields.rating);
+      }
+    }
+  };
+
+  const handlePostRating = async (v) => {
+    console.log("alag", props.userId);
+    const responsePost = await POST(
+      `/ratings`,
+      {
+        user: props.userId,
+        book: book.id,
+        rating: v,
+      },
+      props.token
+    );
+    const resultPost = await responsePost.json();
+  };
+  const handleRating = async (v) => {
+    const response = await POST(
+      `/ratings/user_book_rated`,
+      {
+        user_id: props.userId,
+        book_id: book.id,
+      },
+      props.token
+    );
+
+    if (response.status === 400) {
+      handlePostRating(v);
+      handlePatchBookRating(v);
+    } else if (response.status === 200) {
+      handleClickOpenRated();
+    }
+  };
   return (
     <Paper
       elevation={3}
@@ -67,6 +129,7 @@ export default function BookCard(props) {
               display: "flex",
               alignItems: "center",
               justifyContent: "flex-start",
+              marginBottom: 4,
             }}
           >
             <Typography variant="body1" style={{ fontSize: 10 }}>
@@ -97,6 +160,45 @@ export default function BookCard(props) {
             precision={0.5}
             onChange={(e, v) => handleRating(v)}
           />
+
+          <Paper elevation={0} style={{ height: 20 }}>
+            {userRating && (
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <Typography variant="body2" style={{ fontSize: 10 }}>
+                  You have rated this book with {userRating}
+                </Typography>
+                <StarIcon
+                  style={{ fontSize: 13, marginBottom: 1, color: "#ffc400" }}
+                  fontSize="small"
+                />
+              </div>
+            )}
+          </Paper>
+        </Grid>
+        <Grid item xs={7}>
+          <Button
+            style={{
+              display: "flex",
+              borderRadius: 20,
+              alignItems: "center",
+              justifyContent: "flex-start",
+              backgroundColor: "#f0f0f0",
+              textTransform: "none",
+              padding: "1px 12px",
+            }}
+            target="_blank"
+            href={book.google_link}
+          >
+            <Typography variant="body2" style={{ fontSize: 10 }}>
+              Try it on
+            </Typography>
+            <div>
+              <img
+                style={{ width: 60, marginTop: 8, marginLeft: 5 }}
+                src={googleBooks}
+              />
+            </div>
+          </Button>
         </Grid>
         <Dialog
           open={open}
@@ -131,9 +233,28 @@ export default function BookCard(props) {
             </DialogActions>
           </div>
         </Dialog>
-        <Grid item xs={12}>
-          <Button size="small">Learn More</Button>
-        </Grid>
+
+        <Dialog
+          open={openRated}
+          onClose={handleCloseRated}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <div
+            style={{ width: "100%", height: "100%", backgroundColor: "#fff" }}
+          >
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                You have already rated this bookcard
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleCloseRated} color="primary" autoFocus>
+                Okay
+              </Button>
+            </DialogActions>
+          </div>
+        </Dialog>
       </Grid>
     </Paper>
   );
