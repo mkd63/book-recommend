@@ -14,12 +14,24 @@ import {
   Typography,
   Grid,
   Link,
+  Chip,
 } from "@material-ui/core";
+
+import Autocomplete from "@material-ui/lab/Autocomplete";
 import bookshelfBg from "../../assets/bookshelf-illustration.jpg";
 import { POST } from "../../actions/api";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import PictureUpload from "../picture-upload/ProfilePicture";
+
+const genreOptions = [
+  "Mystery",
+  "Fantasy",
+  "Comedy",
+  "Memoir",
+  "Historical Drama",
+  "Southern Gothic",
+];
 
 export default function Register(props) {
   const classes = useStyles();
@@ -32,6 +44,7 @@ export default function Register(props) {
     cropped_data: "",
     about_text: "",
     rating: 2,
+    google_link: "",
   });
   const [author, setAuthor] = useState([]);
   const [genres, setGenres] = useState([]);
@@ -75,11 +88,12 @@ export default function Register(props) {
     const body = {
       name: formData.name,
       author: author,
-      genres: genres,
+      genres: formData.genres,
       about_text: formData.about_text,
       picture: formData.picture,
       cropped_data: JSON.stringify(formData.cropped_data),
       rating: formData.rating,
+      google_link: formData.google_link,
     };
     console.log("book", body);
     const response = await POST("/books", body);
@@ -101,8 +115,7 @@ export default function Register(props) {
         </Button>
 
         <div className={classes.loginBox}>
-          <h3 className={classes.textHead1}>Admin Portal</h3>
-          <h4 className={classes.textHead2}>Add books</h4>
+          <h3 className={classes.textHead1}>Add Books</h3>
           <div
             style={{
               width: 350,
@@ -202,19 +215,56 @@ export default function Register(props) {
                   ))}
                 </Grid>
               )}
-              <Grid item xs={9}>
-                <FormControl fullWidth error={displayError}>
-                  <InputLabel htmlFor="genres">Genres</InputLabel>
+              <Grid item xs={12}>
+                <Autocomplete
+                  multiple
+                  id="tags-filled"
+                  options={genreOptions}
+                  freeSolo
+                  onChange={(event, newValue) => {
+                    setFormData({ ...formData, genres: newValue });
+                    console.log(formData);
+                  }}
+                  limitTags={2}
+                  renderTags={(value, getTagProps) =>
+                    value.map((option, index) => (
+                      <Chip
+                        variant="outlined"
+                        label={option}
+                        {...getTagProps({ index })}
+                      />
+                    ))
+                  }
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      variant="filled"
+                      label="Favorite Genres"
+                      placeholder="Favorite Genres"
+                    />
+                  )}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                Add an image of the book
+              </Grid>
+              <Grid item xs={3}>
+                <PictureUpload setData={setFormData} data={formData} />
+              </Grid>
+              <Grid item xs={12}>
+                <FormControl fullWidth>
+                  <InputLabel htmlFor="about-text">
+                    Google Books link
+                  </InputLabel>
 
                   <Input
-                    id="genres"
-                    label="Genres"
+                    id="about-text"
                     type="text"
-                    value={formData.genres}
+                    value={formData.google_link}
                     onChange={(e) =>
                       setFormData({
                         ...formData,
-                        genres: e.target.value,
+                        google_link: e.target.value,
                       })
                     }
                     style={{ color: "#fff" }}
@@ -232,38 +282,6 @@ export default function Register(props) {
                     }}
                   />
                 </FormControl>
-              </Grid>
-
-              <Grid item xs={3}>
-                <IconButton
-                  onClick={addgenre}
-                  component="span"
-                  style={{ marginTop: 15, paddingLeft: 0 }}
-                >
-                  <AddCircleIcon />
-                </IconButton>
-              </Grid>
-              {genres.length > 0 && (
-                <Grid
-                  item
-                  xs={12}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "flex-start",
-                  }}
-                >
-                  {genres.map((item) => (
-                    <div className={classes.label}>
-                      <Typography style={{ color: "#fff" }} variant="body2">
-                        {item}
-                      </Typography>
-                    </div>
-                  ))}
-                </Grid>
-              )}
-              <Grid item xs={12}>
-                <PictureUpload setData={setFormData} data={formData} />
               </Grid>
               <Grid item xs={12}>
                 <FormControl fullWidth>
