@@ -24,7 +24,8 @@ import { GETSEARCH, GET } from "../../actions/api";
 import Carousel from "../uiComponents/Carousel/Carousel";
 import "../uiComponents/Carousel/Carousel.css";
 import BookCard from "../uiComponents/BookCard";
-import BookCardLong from "../uiComponents/BookCardLong";
+import BookCardLong from "../uiComponents/BookCardLong.jsx";
+import Footer from "../uiComponents/Footer.jsx";
 
 export default function Home(props) {
   const classes = useStyles();
@@ -87,27 +88,34 @@ export default function Home(props) {
       loadRecommendedBooksByGenre();
     }
   }, [session]);
-
-  const renderCarousel = () => {
-    return (
-      <Carousel show={3}>
-        {topRatedBooks.map((item) => (
-          <BookCard book={item} token={session.token} history={props.history} />
-        ))}
-      </Carousel>
-    );
-  };
+  //
+  // const renderCarousel = () => {
+  //   return (
+  //     <Carousel show={3}>
+  //       {topRatedBooks.map((item) => (
+  //         <BookCard
+  //           book={item}
+  //           token={session.token}
+  //           userId={session.userId}
+  //           history={props.history}
+  //         />
+  //       ))}
+  //     </Carousel>
+  //   );
+  // };
 
   const renderCarouselMUI = () => {
     return (
       <CarouselMUI
         animation="slide"
-        autoPlay={false}
         className={classes.carousel}
+        autoPlay={false}
       >
         {topRatedBooks.map((item) => (
           <BookCardLong
+            loadBooksByRating={loadBooksByRating}
             book={item}
+            userId={session.userId}
             token={session.token}
             history={props.history}
           />
@@ -120,10 +128,20 @@ export default function Home(props) {
     <div className={classes.root}>
       <div className={classes.imageContainer}>
         <div className={classes.imageContainerCover}>
-          <img src={welcomeText} style={{ marginBottom: 5 }} />
+          {/*<img src={welcomeText} style={{ marginBottom: 5 }} />*/}
+          <Typography
+            style={{ fontSize: 80, fontFamily: "Roboto", fontWeight: "300" }}
+          >
+            Welcome to My Books
+          </Typography>
           <Typography
             variant="body1"
-            style={{ textAlign: "center", width: 650, marginBottom: 65 }}
+            style={{
+              textAlign: "center",
+              fontFamily: "Roboto",
+              width: 650,
+              marginBottom: 65,
+            }}
           >
             MyBooks is a website which recommends you books according to your
             taste. We use the approach of colaborative filtering to filter out
@@ -142,11 +160,12 @@ export default function Home(props) {
       </div>
       {searchResults.length > 0 && (
         <div className={classes.searchResults}>
-          <Typography variant="h5">Top rated books</Typography>
-          <Grid container spacing={3}>
+          <Typography variant="h5">Search results for {bookSearch}</Typography>
+          <Grid container spacing={3} style={{ marginTop: 20 }}>
             {searchResults.map((item) => (
               <BookCard
                 book={item}
+                userId={session.userId}
                 token={session.token}
                 history={props.history}
               />
@@ -155,21 +174,29 @@ export default function Home(props) {
         </div>
       )}
 
-      {session.token && preferredGenresBooks.length > 0 && (
-        <div className={classes.searchResults}>
-          <Typography variant="h5">
-            Books recommended by your preferred genres
-          </Typography>
-          <Grid container spacing={3} style={{ marginTop: 40 }}>
-            {preferredGenresBooks.map((item) => (
-              <BookCard
-                book={item}
-                token={session.token}
-                history={props.history}
-              />
-            ))}
-          </Grid>
-        </div>
+      {session.token ? (
+        preferredGenresBooks.length > 0 && (
+          <div className={classes.searchResults}>
+            <Typography variant="h5">
+              Books recommended by your preferred genres
+            </Typography>
+            <Grid container spacing={3} style={{ marginTop: 40 }}>
+              {preferredGenresBooks.map((item) => (
+                <BookCard
+                  book={item}
+                  userId={session.userId}
+                  token={session.token}
+                  history={props.history}
+                />
+              ))}
+            </Grid>
+          </div>
+        )
+      ) : (
+        <Grid container className={classes.searchResults}>
+          <Grid item xs={5}></Grid>
+          <Grid item xs={7}></Grid>
+        </Grid>
       )}
 
       <div className={classes.searchResults}>
@@ -182,8 +209,8 @@ export default function Home(props) {
           {topRatedBooks.length > 0 && renderCarouselMUI()}
         </Grid>
       </div>
-
-      <div className={classes.searchResults}>
+      <Footer />
+      {/*<div className={classes.searchResults}>
         <Typography variant="h5">Top rated books</Typography>
         <Grid
           container
@@ -192,7 +219,7 @@ export default function Home(props) {
         >
           {topRatedBooks.length > 0 && renderCarousel()}
         </Grid>
-      </div>
+      </div>*/}
     </div>
   );
 }
