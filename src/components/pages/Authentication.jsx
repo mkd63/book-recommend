@@ -97,7 +97,7 @@ export default function Authentication(props) {
           }}
         >
           <img src={bookLogo} style={{ height: 35, width: 35 }}></img>
-          <h3 className={classes.logoText}>MyBooks</h3>
+          <h3 className={classes.logoText}>My Books</h3>
         </div>
         <div className={classes.options}>
           <Link
@@ -107,14 +107,6 @@ export default function Authentication(props) {
             color="inherit"
           >
             Home
-          </Link>
-          <Link
-            className={classes.optionText}
-            href="#"
-            onClick={preventDefault}
-            color="inherit"
-          >
-            Find MyBook
           </Link>
 
           <Link
@@ -181,11 +173,13 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-between",
   },
   logoText: {
+    fontFamily: "Roboto",
+    fontWeight: "300",
+
     marginTop: 0,
     marginBottom: 0,
-    fontFamily: "cursive",
     fontSize: 16,
-    color: "#21ff00",
+    color: "rgba(255, 140, 0, 1)",
   },
   boxPrimary: {
     background: "#4B7BEC",
