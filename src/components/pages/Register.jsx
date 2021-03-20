@@ -22,8 +22,8 @@ import { POST } from "../../actions/api";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 
 const genreOptions = [
-  "mystery",
-  "fantasy",
+  "Mystery",
+  "Fantasy",
   "Comedy",
   "Memoir",
   "Historical Drama",
