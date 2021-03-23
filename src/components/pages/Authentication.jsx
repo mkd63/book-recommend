@@ -16,7 +16,7 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "reactstrap";
-
+import AllBooks from "./AllBooks.jsx";
 export default function Authentication(props) {
   const classes = useStyles();
   const { session, setSession } = useContext(GlobalContext);
@@ -151,6 +151,8 @@ export default function Authentication(props) {
         </div>
       </div>
       <Route exact path="/" component={Home} />
+
+      <Route exact path="/allbooks" component={AllBooks} />
     </div>
   );
 }
