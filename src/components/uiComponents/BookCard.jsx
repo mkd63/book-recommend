@@ -115,11 +115,65 @@ export default function BookCard(props) {
     <Paper
       elevation={3}
       variant="outlined"
-      style={{ width: 275, marginRight: 35 }}
+      style={{ width: 275, marginRight: 35, marginTop: 35 }}
     >
-      <Grid container spacing={2} style={{ padding: 10 }}>
+      <Grid
+        container
+        spacing={2}
+        style={{ padding: 10 }}
+        direction="column-reverse"
+      >
+        <Grid item xs={7}>
+          <Button
+            style={{
+              display: "flex",
+              borderRadius: 20,
+              alignItems: "center",
+              justifyContent: "flex-start",
+              backgroundColor: "#f0f0f0",
+              textTransform: "none",
+              padding: "1px 12px",
+            }}
+            target="_blank"
+            href={book.google_link}
+          >
+            <Typography variant="body2" style={{ fontSize: 10 }}>
+              Try it on
+            </Typography>
+            <div>
+              <img
+                style={{ width: 60, marginTop: 8, marginLeft: 5 }}
+                src={googleBooks}
+              />
+            </div>
+          </Button>
+        </Grid>
         <Grid item xs={12}>
-          <Typography variant="h6">{book.name}</Typography>
+          <Rating
+            name="half-rating"
+            value={book.rating}
+            precision={0.5}
+            onChange={(e, v) => handleRating(v)}
+          />
+
+          <Paper elevation={0} style={{ height: 20 }}>
+            {userRating && (
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <Typography variant="body2" style={{ fontSize: 10 }}>
+                  You have rated this book with {userRating}
+                </Typography>
+                <StarIcon
+                  style={{ fontSize: 13, marginBottom: 1, color: "#ffc400" }}
+                  fontSize="small"
+                />
+              </div>
+            )}
+          </Paper>
+        </Grid>
+        <Grid item xs={12} zeroMinWidth>
+          <Typography variant="h6" noWrap>
+            {book.name}
+          </Typography>
           {/*<img
               src={item.volumeInfo.imageLinks.thumbnail}
               style={{ width: "100%", height: 320 }}
@@ -153,53 +207,7 @@ export default function BookCard(props) {
           <Typography variant="body1"></Typography>
           <Typography variant="body1"></Typography>
         </Grid>
-        <Grid item xs={12}>
-          <Rating
-            name="half-rating"
-            value={book.rating}
-            precision={0.5}
-            onChange={(e, v) => handleRating(v)}
-          />
 
-          <Paper elevation={0} style={{ height: 20 }}>
-            {userRating && (
-              <div style={{ display: "flex", alignItems: "center" }}>
-                <Typography variant="body2" style={{ fontSize: 10 }}>
-                  You have rated this book with {userRating}
-                </Typography>
-                <StarIcon
-                  style={{ fontSize: 13, marginBottom: 1, color: "#ffc400" }}
-                  fontSize="small"
-                />
-              </div>
-            )}
-          </Paper>
-        </Grid>
-        <Grid item xs={7}>
-          <Button
-            style={{
-              display: "flex",
-              borderRadius: 20,
-              alignItems: "center",
-              justifyContent: "flex-start",
-              backgroundColor: "#f0f0f0",
-              textTransform: "none",
-              padding: "1px 12px",
-            }}
-            target="_blank"
-            href={book.google_link}
-          >
-            <Typography variant="body2" style={{ fontSize: 10 }}>
-              Try it on
-            </Typography>
-            <div>
-              <img
-                style={{ width: 60, marginTop: 8, marginLeft: 5 }}
-                src={googleBooks}
-              />
-            </div>
-          </Button>
-        </Grid>
         <Dialog
           open={open}
           onClose={handleClose}
