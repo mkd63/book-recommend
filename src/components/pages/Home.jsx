@@ -242,11 +242,16 @@ export default function Home(props) {
             Start Rating a few books to get the best recommendations
           </Typography>
         </div>
-        <div className={classes.searchResults}>
+        <div className={(classes.searchResults, classes.centerData)}>
           <Grid
             container
             spacing={3}
-            style={{ marginTop: 40, marginBottom: 20, width: "100%" }}
+            style={{
+              marginTop: 40,
+              marginBottom: 20,
+              width: "100%",
+              justifyContent: "Center",
+            }}
           >
             {topRatedBooks.length > 0 &&
               topRatedBooks
@@ -259,6 +264,18 @@ export default function Home(props) {
                     history={props.history}
                   />
                 ))}
+            <Grid item justify="flex-end" xs={12} style={{}}>
+              <div
+                style={{
+                  width: "89%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "flex-end",
+                }}
+              >
+                <Link href="/allbooks">View All</Link>
+              </div>
+            </Grid>
           </Grid>
         </div>
       </div>
@@ -318,11 +335,14 @@ const useStyles = makeStyles((theme) => ({
   headContainer: {
     backgroundColor: "#fe9505",
     padding: 30,
+    display: "flex",
+    justifyContent: "center",
   },
   head: {
     fontSize: "2.6rem",
     fontWeight: "500",
     color: "#fff",
+    width: 570,
     textAlign: "center",
   },
   carousel: {
