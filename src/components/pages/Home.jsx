@@ -14,7 +14,7 @@ import { GlobalContext } from "../../context/GlobalContext";
 import { Link } from "@material-ui/core";
 import bookshelfBg from "../../assets/home-books-bg.jpg";
 import bookSample from "../../assets/book-sample.png";
-import bookCollec from "../../assets/book-collec.png";
+import bookCollec from "../../assets/book-deck.png";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
@@ -26,7 +26,6 @@ import Carousel from "../uiComponents/Carousel/Carousel";
 import "../uiComponents/Carousel/Carousel.css";
 import BookCard from "../uiComponents/BookCard";
 import BookCardLong from "../uiComponents/BookCardLong.jsx";
-import Footer from "../uiComponents/Footer.jsx";
 
 export default function Home(props) {
   const classes = useStyles();
@@ -35,17 +34,8 @@ export default function Home(props) {
   const [bookData, setBookData] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
   const [topRatedBooks, setTopRatedBooks] = useState([]);
-
+  const [crBooks, setCrBooks] = useState([]);
   const [preferredGenresBooks, setPreferredGenresBooks] = useState([]);
-  const googleApiSearch = () => {
-    fetch(
-      `https://www.googleapis.com/books/v1/volumes?q=${bookSearch}&key=AIzaSyBlWe_FxlfDWB2arFlrBrVOViUUmCHEY18`
-    )
-      .then((response) => response.json())
-      .then((result) => {
-        setBookData(result.items);
-      });
-  };
 
   const apiSearch = async () => {
     if (bookSearch.length > 0) {
@@ -71,15 +61,21 @@ export default function Home(props) {
     setPreferredGenresBooks(result);
   };
 
+  const serialize = (obj) => {
+    for (let i = 0; i < obj.length; i++) {
+      console.log("onjarr", obj[i].fields.author);
+      obj[i].fields.author = JSON.parse(obj[i].fields.author);
+    }
+  };
   const loadCollaborativeFilteringRecommendations = async () => {
-    console.log("running collaborative filtering");
     const response = await POST(
       `/ratings/recommendations`,
       { username: session.username },
       session.token
     );
     const result = await response.json();
-    console.log(result, "books recommendations");
+    serialize(result);
+    setCrBooks(result);
   };
 
   const loadBooks = async () => {
@@ -120,12 +116,8 @@ export default function Home(props) {
 
   const renderCarouselMUI = () => {
     return (
-      <CarouselMUI
-        animation="slide"
-        className={classes.carousel}
-        autoPlay={false}
-      >
-        {topRatedBooks.map((item) => (
+      <CarouselMUI animation="slide" className={classes.carousel}>
+        {topRatedBooks.slice(0, 5).map((item) => (
           <BookCardLong
             loadBooksByRating={loadBooksByRating}
             book={item}
@@ -200,36 +192,95 @@ export default function Home(props) {
         </div>
       </div>
       {searchResults.length > 0 && (
-        <div className={classes.searchResults}>
-          <Typography variant="h5">Search results for {bookSearch}</Typography>
-          <Grid container spacing={3} style={{ marginTop: 20 }}>
-            {searchResults.map((item) => (
-              <BookCard
-                book={item}
-                userId={session.userId}
-                token={session.token}
-                history={props.history}
-              />
-            ))}
-          </Grid>
+        <div>
+          <div className={classes.headContainer}>
+            <Typography variant="h5" className={classes.head}>
+              Search Results for {bookSearch}
+            </Typography>
+          </div>
+          <div className={classes.searchResults}>
+            <Grid
+              container
+              spacing={3}
+              style={{
+                marginTop: 40,
+                marginBottom: 40,
+                width: "100%",
+                justifyContent: "flex-start",
+              }}
+            >
+              {searchResults.map((item) => (
+                <BookCard
+                  book={item}
+                  userId={session.userId}
+                  token={session.token}
+                  history={props.history}
+                />
+              ))}
+            </Grid>
+          </div>
         </div>
       )}
 
       {session.token && preferredGenresBooks.length > 0 && (
-        <div className={classes.searchResults}>
-          <Typography variant="h5">
-            Books recommended by your preferred genres
-          </Typography>
-          <Grid container spacing={3} style={{ marginTop: 40 }}>
-            {preferredGenresBooks.map((item) => (
-              <BookCard
-                book={item}
-                userId={session.userId}
-                token={session.token}
-                history={props.history}
-              />
-            ))}
-          </Grid>
+        <div>
+          <div className={classes.headContainer}>
+            <Typography variant="h5" className={classes.head}>
+              Books based on your preferred genres
+            </Typography>
+          </div>
+          <div className={classes.searchResults}>
+            <Grid
+              container
+              spacing={3}
+              style={{
+                marginTop: 40,
+                marginBottom: 40,
+                width: "100%",
+                justifyContent: "flex-start",
+              }}
+            >
+              {preferredGenresBooks.map((item) => (
+                <BookCard
+                  book={item}
+                  userId={session.userId}
+                  token={session.token}
+                  history={props.history}
+                />
+              ))}
+            </Grid>
+          </div>
+        </div>
+      )}
+
+      {session.token && crBooks.length > 0 && (
+        <div>
+          <div className={classes.headContainer}>
+            <Typography variant="h5" className={classes.head}>
+              Books recommended using collaborative filtering
+            </Typography>
+          </div>
+          <div className={classes.searchResults}>
+            <Grid
+              container
+              spacing={3}
+              style={{
+                marginTop: 40,
+                marginBottom: 40,
+                width: "100%",
+                justifyContent: "flex-start",
+              }}
+            >
+              {crBooks.map((item) => (
+                <BookCard
+                  book={item.fields}
+                  userId={session.userId}
+                  token={session.token}
+                  history={props.history}
+                />
+              ))}
+            </Grid>
+          </div>
         </div>
       )}
       <div>
@@ -255,7 +306,7 @@ export default function Home(props) {
             Start Rating a few books to get the best recommendations
           </Typography>
         </div>
-        <div className={(classes.searchResults, classes.centerData)}>
+        <div className={classes.searchResults}>
           <Grid
             container
             alignContent="center"
@@ -264,7 +315,7 @@ export default function Home(props) {
               marginTop: 40,
               marginBottom: 20,
               width: "100%",
-              justifyContent: "Center",
+              justifyContent: "flex-start",
             }}
           >
             {topRatedBooks.length > 0 &&
@@ -281,7 +332,7 @@ export default function Home(props) {
             <Grid item justify="flex-end" xs={12} style={{}}>
               <div
                 style={{
-                  width: "89%",
+                  width: "98%",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "flex-end",
@@ -293,7 +344,6 @@ export default function Home(props) {
           </Grid>
         </div>
       </div>
-      <Footer />
       {/*<div className={classes.searchResults}>
         <Typography variant="h5">Top rated books</Typography>
         <Grid
@@ -343,12 +393,12 @@ const useStyles = makeStyles((theme) => ({
   },
   searchResults: {
     marginTop: 50,
-    paddingLeft: 80,
-    paddingRight: 80,
+    paddingLeft: 150,
+    paddingRight: 120,
   },
   headContainer: {
     backgroundColor: "#fe9505",
-    padding: 30,
+    padding: 15,
     display: "flex",
     justifyContent: "center",
   },
