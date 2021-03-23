@@ -29,9 +29,76 @@ import BookCardLong from "../uiComponents/BookCardLong.jsx";
 import Footer from "../uiComponents/Footer.jsx";
 
 export default function AllBooks(props) {
+  const classes = useStyles();
+  const { session } = useContext(GlobalContext);
+  const [bookSearch, setBookSearch] = useState("");
+  const [bookData, setBookData] = useState([]);
+  const [searchResults, setSearchResults] = useState([]);
+  const [topRatedBooks, setTopRatedBooks] = useState([]);
+  const [crBooks, setCrBooks] = useState([]);
+  const [preferredGenresBooks, setPreferredGenresBooks] = useState([]);
+  const [maxLimit, setMaxLimit] = useState(4);
+  const loadBooksByRating = async () => {
+    const response = await GET("/books");
+    const result = await response.json();
+    setTopRatedBooks(result);
+    console.log(result, "books rating");
+  };
+  useEffect(() => {
+    loadBooksByRating();
+  }, []);
   return (
-    <div>
-      <Typography>All books</Typography>
+    <div className={classes.root}>
+      <div className={classes.container}>
+        <Grid
+          container
+          alignContent="center"
+          spacing={3}
+          style={{
+            marginTop: 40,
+            marginBottom: 20,
+            width: "100%",
+            justifyContent: "flex-start",
+          }}
+        >
+          {topRatedBooks.length > 0 &&
+            topRatedBooks
+              .slice(0, maxLimit)
+              .map((item) => (
+                <BookCard
+                  book={item}
+                  userId={session.userId}
+                  token={session.token}
+                  history={props.history}
+                />
+              ))}
+          {maxLimit < topRatedBooks.length && (
+            <Grid item justify="flex-end" xs={12} style={{}}>
+              <div
+                style={{
+                  width: "98%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "flex-end",
+                }}
+              >
+                <Link onClick={() => setMaxLimit(maxLimit + 4)}>View More</Link>
+              </div>
+            </Grid>
+          )}
+        </Grid>
+      </div>
     </div>
   );
 }
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    marginTop: 100,
+    flexGrow: 1,
+  },
+  container: {
+    paddingLeft: 150,
+    paddingRight: 120,
+  },
+}));
