@@ -12,10 +12,10 @@ export default function AppRouter() {
     <BrowserRouter basename="/">
       <GlobalProvider>
         <Switch>
-          <Route exact path="/" component={Authentication} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
           <Route exact path="/admin" component={AdminForm} />
+          <Route path="/" component={Authentication} />
         </Switch>
       </GlobalProvider>
     </BrowserRouter>
