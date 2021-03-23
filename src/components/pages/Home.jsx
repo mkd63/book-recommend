@@ -21,7 +21,7 @@ import CardContent from "@material-ui/core/CardContent";
 import welcomeText from "../../assets/welcomeText.svg";
 import TextField from "@material-ui/core/TextField";
 import { Input } from "reactstrap";
-import { GETSEARCH, GET } from "../../actions/api";
+import { GETSEARCH, GET, POST } from "../../actions/api";
 import Carousel from "../uiComponents/Carousel/Carousel";
 import "../uiComponents/Carousel/Carousel.css";
 import BookCard from "../uiComponents/BookCard";
@@ -70,6 +70,18 @@ export default function Home(props) {
     console.log(result, "books rating");
     setPreferredGenresBooks(result);
   };
+
+  const loadCollaborativeFilteringRecommendations = async () => {
+    console.log("running collaborative filtering");
+    const response = await POST(
+      `/ratings/recommendations`,
+      { username: session.username },
+      session.token
+    );
+    const result = await response.json();
+    console.log(result, "books recommendations");
+  };
+
   const loadBooks = async () => {
     const response = await GET("/books");
     const result = await response.json();
@@ -87,6 +99,7 @@ export default function Home(props) {
     loadBooksByRating();
     if (session.username) {
       loadRecommendedBooksByGenre();
+      loadCollaborativeFilteringRecommendations();
     }
   }, [session]);
   //
@@ -245,6 +258,7 @@ export default function Home(props) {
         <div className={(classes.searchResults, classes.centerData)}>
           <Grid
             container
+            alignContent="center"
             spacing={3}
             style={{
               marginTop: 40,
