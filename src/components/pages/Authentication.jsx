@@ -17,6 +17,8 @@ import {
   DropdownItem,
 } from "reactstrap";
 import AllBooks from "./AllBooks.jsx";
+import Footer from "../uiComponents/Footer.jsx";
+
 export default function Authentication(props) {
   const classes = useStyles();
   const { session, setSession } = useContext(GlobalContext);
@@ -100,21 +102,11 @@ export default function Authentication(props) {
           <h3 className={classes.logoText}>My Books</h3>
         </div>
         <div className={classes.options}>
-          <Link
-            className={classes.optionText}
-            href="#"
-            onClick={preventDefault}
-            color="inherit"
-          >
+          <Link className={classes.optionText} href="/" color="inherit">
             Home
           </Link>
 
-          <Link
-            className={classes.optionText}
-            href="#"
-            onClick={preventDefault}
-            color="inherit"
-          >
+          <Link className={classes.optionText} href="#" color="inherit">
             About
           </Link>
           {!session.token ? (
@@ -153,6 +145,7 @@ export default function Authentication(props) {
       <Route exact path="/" component={Home} />
 
       <Route exact path="/allbooks" component={AllBooks} />
+      <Footer />
     </div>
   );
 }
