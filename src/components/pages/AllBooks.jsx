@@ -42,16 +42,13 @@ export default function AllBooks(props) {
     const response = await GET("/books");
     const result = await response.json();
     setTopRatedBooks(result);
-    console.log(result, "books rating");
   };
 
   const apiSearch = async () => {
     if (bookSearch.length > 0) {
-      console.log("Searching");
       const response = await GETSEARCH(`/books/?search=${bookSearch}`);
       const result = await response.json();
 
-      console.log("Searching", result);
       setTopRatedBooks(result);
     }
   };
@@ -102,11 +99,13 @@ export default function AllBooks(props) {
           }}
         >
           {topRatedBooks.length > 0 &&
+            !console.log(topRatedBooks) &&
             topRatedBooks
               .slice(0, maxLimit)
-              .map((item) => (
+              .map((item, index) => (
                 <BookCard
                   book={item}
+                  key={index}
                   userId={session.userId}
                   token={session.token}
                   history={props.history}

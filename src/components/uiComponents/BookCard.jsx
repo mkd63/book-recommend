@@ -27,7 +27,7 @@ import "./Carousel/Carousel.css";
 import StarIcon from "@material-ui/icons/Star";
 
 export default function BookCard(props) {
-  const [book] = useState(props.book);
+  const [book, setBook] = useState(props.book);
   const [open, setOpen] = useState(false);
   const [openRated, setOpenRated] = useState(false);
   const classes = useStyles();
@@ -45,6 +45,11 @@ export default function BookCard(props) {
   const handleCloseRated = () => {
     setOpenRated(false);
   };
+
+  useEffect(() => {
+    console.log(props.book);
+    setBook(props.book);
+  }, [props.book]);
 
   const handlePatchBookRating = async (v) => {
     const response = await PATCH(`/books/books_rating_patch`, {
@@ -113,6 +118,7 @@ export default function BookCard(props) {
   };
   return (
     <Paper
+      key={props.key}
       elevation={3}
       variant="outlined"
       style={{ width: 275, marginRight: 35, marginTop: 35 }}
