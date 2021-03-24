@@ -44,18 +44,58 @@ export default function AllBooks(props) {
     setTopRatedBooks(result);
     console.log(result, "books rating");
   };
+
+  const apiSearch = async () => {
+    if (bookSearch.length > 0) {
+      console.log("Searching");
+      const response = await GETSEARCH(`/books/?search=${bookSearch}`);
+      const result = await response.json();
+
+      console.log("Searching", result);
+      setTopRatedBooks(result);
+    }
+  };
+
   useEffect(() => {
     loadBooksByRating();
   }, []);
+
   return (
     <div className={classes.root}>
       <div className={classes.container}>
+        <div
+          style={{
+            marginTop: 190,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "flex-start",
+          }}
+        >
+          <Input
+            id="outlined-basic"
+            placeholder="Search books"
+            className={classes.field}
+            value={bookSearch}
+            onChange={(e) => setBookSearch(e.target.value)}
+            onBlur={() => apiSearch()}
+            onSubmit={() => apiSearch()}
+          />
+          <Button
+            className={classes.homeButton}
+            onClick={() => {
+              loadBooksByRating();
+              setBookSearch("");
+            }}
+          >
+            Clear
+          </Button>
+        </div>
         <Grid
           container
           alignContent="center"
           spacing={3}
           style={{
-            marginTop: 40,
+            marginTop: 20,
             marginBottom: 20,
             width: "100%",
             justifyContent: "flex-start",
@@ -100,5 +140,23 @@ const useStyles = makeStyles((theme) => ({
   container: {
     paddingLeft: 150,
     paddingRight: 120,
+  },
+  field: {
+    fontSize: 23,
+    padding: 7,
+    height: 25,
+    borderRadius: 0,
+    borderWidth: 0,
+  },
+  homeButton: {
+    height: 38,
+    borderRadius: 0,
+
+    backgroundColor: "#fe9505",
+    color: "#D5D5D5",
+    "&:hover": {
+      color: "#fe9505",
+      backgroundColor: "#D5D5D5",
+    },
   },
 }));
