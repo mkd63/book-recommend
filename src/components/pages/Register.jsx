@@ -20,6 +20,7 @@ import Chip from "@material-ui/core/Chip";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { POST } from "../../actions/api";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
+import swal from "@sweetalert/with-react";
 
 const genreOptions = [
   "Mystery",
@@ -64,6 +65,16 @@ export default function Register(props) {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [displayError, setDisplayError] = useState(false);
 
+  const onRegisterSuccess = () => {
+    swal("Great!", `You registered successfully`, "success", {
+      button: "Login",
+    }).then((value) => {
+      if (value) {
+        props.history.push("/login");
+      }
+    });
+  };
+
   useEffect(() => {
     console.log(displayError);
   }, [displayError]);
@@ -105,6 +116,9 @@ export default function Register(props) {
     body["preferred_genres"] = genreSet;
     console.log(body);
     const response = await POST("/users", body);
+    if (response.status === 201) {
+      onRegisterSuccess();
+    }
     if (response.status > 300) {
     }
   };
