@@ -32,11 +32,7 @@ export default function AllBooks(props) {
   const classes = useStyles();
   const { session } = useContext(GlobalContext);
   const [bookSearch, setBookSearch] = useState("");
-  const [bookData, setBookData] = useState([]);
-  const [searchResults, setSearchResults] = useState([]);
   const [topRatedBooks, setTopRatedBooks] = useState([]);
-  const [crBooks, setCrBooks] = useState([]);
-  const [preferredGenresBooks, setPreferredGenresBooks] = useState([]);
   const [maxLimit, setMaxLimit] = useState(4);
   const loadBooksByRating = async () => {
     const response = await GET("/books");
