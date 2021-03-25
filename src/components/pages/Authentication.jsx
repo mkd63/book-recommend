@@ -17,6 +17,7 @@ import {
   DropdownItem,
 } from "reactstrap";
 import AllBooks from "./AllBooks.jsx";
+import About from "./About.jsx";
 import Footer from "../uiComponents/Footer.jsx";
 
 export default function Authentication(props) {
@@ -106,7 +107,7 @@ export default function Authentication(props) {
             Home
           </Link>
 
-          <Link className={classes.optionText} href="#" color="inherit">
+          <Link className={classes.optionText} href="/about" color="inherit">
             About
           </Link>
           {!session.token ? (
@@ -143,7 +144,7 @@ export default function Authentication(props) {
         </div>
       </div>
       <Route exact path="/" component={Home} />
-
+      <Route exact path="/about" component={About} />
       <Route exact path="/allbooks" component={AllBooks} />
       <Footer />
     </div>
