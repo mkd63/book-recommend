@@ -61,6 +61,11 @@ export default function Register(props) {
   useEffect(() => {
     console.log(displayError);
   }, [displayError]);
+  const onBookAddedSuccess = () => {
+    swal("Great!", `You added the book successfully`, "success", {
+      button: "Okay",
+    });
+  };
 
   const addauthor = () => {
     if (formData.author !== "") {
@@ -103,6 +108,9 @@ export default function Register(props) {
     };
     console.log("book", body);
     const response = await POST("/books", body);
+    if (response.status === 201) {
+      onBookAddedSuccess();
+    }
     console.log("book added ", response);
   };
 
