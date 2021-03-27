@@ -47,7 +47,7 @@ export default function BookCard(props) {
   };
 
   useEffect(() => {
-    console.log(props.book);
+    console.log("new book pls work", props.book);
     setBook(props.book);
   }, [props.book]);
 
@@ -100,6 +100,7 @@ export default function BookCard(props) {
     const resultPost = await responsePost.json();
   };
   const handleRating = async (v) => {
+    console.log("book_id", props.book.id);
     const response = await POST(
       `/ratings/user_book_rated`,
       {
@@ -156,7 +157,7 @@ export default function BookCard(props) {
         </Grid>
         <Grid item xs={12}>
           <Rating
-            name="half-rating"
+            name={`rating-${book.id}`}
             value={book.rating}
             precision={0.5}
             onChange={(e, v) => handleRating(v)}
