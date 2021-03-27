@@ -75,6 +75,7 @@ export default function Home(props) {
     );
     const result = await response.json();
     serialize(result);
+    console.log("crbooks", result);
     setCrBooks(result);
   };
 
@@ -113,7 +114,11 @@ export default function Home(props) {
   //     </Carousel>
   //   );
   // };
-
+  const flattenCrBook = (item) => {
+    let result = item.fields;
+    result["id"] = item.pk;
+    return result;
+  };
   const renderCarouselMUI = () => {
     return (
       <CarouselMUI animation="slide" className={classes.carousel}>
@@ -273,7 +278,7 @@ export default function Home(props) {
             >
               {crBooks.map((item) => (
                 <BookCard
-                  book={item.fields}
+                  book={flattenCrBook(item)}
                   userId={session.userId}
                   token={session.token}
                   history={props.history}
