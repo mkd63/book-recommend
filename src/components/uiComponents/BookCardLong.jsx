@@ -26,6 +26,7 @@ import Carousel from "./Carousel/Carousel";
 import "./Carousel/Carousel.css";
 import StarIcon from "@material-ui/icons/Star";
 
+import swal from "@sweetalert/with-react";
 export default function BookCardLong(props) {
   const [book] = useState(props.book);
   const [open, setOpen] = React.useState(false);
@@ -67,7 +68,11 @@ export default function BookCardLong(props) {
   useEffect(() => {
     handleCheckBookRated();
   }, []);
-
+  const onBookRatedSuccess = () => {
+    swal("Great!", `You rated the book successfully`, "success", {
+      button: "Okay",
+    });
+  };
   const handlePatchBookRating = async (v) => {
     const response = await PATCH(`/books/books_rating_patch`, {
       id: book.id,
@@ -94,6 +99,9 @@ export default function BookCardLong(props) {
       props.token
     );
     const resultPost = await responsePost.json();
+    if (responsePost.status === 201) {
+      onBookRatedSuccess();
+    }
     return responsePost;
   };
   const handleRatingLong = async (v) => {

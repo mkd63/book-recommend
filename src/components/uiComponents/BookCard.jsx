@@ -22,6 +22,8 @@ import { PATCH, POST, GET } from "../../actions/api";
 import Rating from "@material-ui/lab/Rating";
 import BookPicture from "../picture-upload/UserPicture";
 import googleBooks from "../../assets/google_books.png";
+
+import swal from "@sweetalert/with-react";
 import Carousel from "./Carousel/Carousel";
 import "./Carousel/Carousel.css";
 import StarIcon from "@material-ui/icons/Star";
@@ -50,6 +52,12 @@ export default function BookCard(props) {
     console.log("new book pls work", props.book);
     setBook(props.book);
   }, [props.book]);
+
+  const onBookRatedSuccess = () => {
+    swal("Great!", `You rated the book successfully`, "success", {
+      button: "Okay",
+    });
+  };
 
   const handlePatchBookRating = async (v) => {
     const response = await PATCH(`/books/books_rating_patch`, {
@@ -98,6 +106,9 @@ export default function BookCard(props) {
       props.token
     );
     const resultPost = await responsePost.json();
+    if (responsePost.status === 201) {
+      onBookRatedSuccess();
+    }
   };
   const handleRating = async (v) => {
     console.log("book_id", props.book.id);
