@@ -69,6 +69,8 @@ export default function BookCardLong(props) {
     handleCheckBookRated();
   }, []);
   const onBookRatedSuccess = () => {
+    handleCheckBookRated();
+
     swal("Great!", `You rated the book successfully`, "success", {
       button: "Okay",
     });

@@ -54,10 +54,10 @@ export default function BookCard(props) {
   }, [props.book]);
 
   const onBookRatedSuccess = () => {
+    handleCheckBookRated();
+
     swal("Great!", `You rated the book successfully`, "success", {
       button: "Okay",
-    }).then((value) => {
-      handleCheckBookRated();
     });
   };
 
