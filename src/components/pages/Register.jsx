@@ -29,6 +29,12 @@ const genreOptions = [
   "Memoir",
   "Historical Drama",
   "Southern Gothic",
+  "Romantic thriller",
+  "Inspirational",
+  "Thriller",
+  "Drama",
+  "Adventure",
+  "Mythological",
 ];
 
 export default function Register(props) {
