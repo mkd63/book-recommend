@@ -51,6 +51,7 @@ export default function Register(props) {
           <Input
             id="outlined-basic"
             placeholder="Search books"
+            type="password"
             className={classes.field}
             value={key}
             onChange={(e) => setKey(e.target.value)}
