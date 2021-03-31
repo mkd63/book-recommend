@@ -139,7 +139,7 @@ export default function BookCardLong(props) {
     >
       <Grid container spacing={2} style={{ padding: 30, paddingBottom: 20 }}>
         <Grid item xs={3}>
-          <div style={{ width: "100%", height: 370 }}>
+          <div style={{ width: 275, height: 370 }}>
             <BookPicture picture={book.picture} crop={book.cropped_data} />
           </div>
         </Grid>
