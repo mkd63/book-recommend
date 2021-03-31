@@ -26,6 +26,8 @@ import Carousel from "../uiComponents/Carousel/Carousel";
 import "../uiComponents/Carousel/Carousel.css";
 import BookCard from "../uiComponents/BookCard";
 import BookCardLong from "../uiComponents/BookCardLong.jsx";
+import Slide from "react-reveal/Slide";
+import Fade from "react-reveal/Fade";
 
 export default function Home(props) {
   const classes = useStyles();
@@ -101,21 +103,7 @@ export default function Home(props) {
       loadCollaborativeFilteringRecommendations();
     }
   }, [session]);
-  //
-  // const renderCarousel = () => {
-  //   return (
-  //     <Carousel show={3}>
-  //       {topRatedBooks.map((item) => (
-  //         <BookCard
-  //           book={item}
-  //           token={session.token}
-  //           userId={session.userId}
-  //           history={props.history}
-  //         />
-  //       ))}
-  //     </Carousel>
-  //   );
-  // };
+
   const flattenCrBook = (item) => {
     let result = item.fields;
     result["id"] = item.pk;
@@ -142,30 +130,34 @@ export default function Home(props) {
       <div className={classes.imageContainer}>
         <div className={classes.imageContainerCover}>
           {/*<img src={welcomeText} style={{ marginBottom: 5 }} />*/}
-          <Typography
-            style={{
-              fontSize: 80,
-              fontFamily: "Roboto",
-              fontWeight: "300",
-              color: "#fff",
-            }}
-          >
-            Welcome to My Books
-          </Typography>
-          <Typography
-            variant="body1"
-            style={{
-              textAlign: "center",
-              fontFamily: "Roboto",
-              width: 650,
-              marginBottom: 65,
-              color: "#fff",
-            }}
-          >
-            MyBooks is a website which recommends you books according to your
-            taste. We use the approach of collaborative filtering to filter out
-            the best reads for you !
-          </Typography>
+          <Slide left>
+            <Typography
+              style={{
+                fontSize: 80,
+                fontFamily: "Roboto",
+                fontWeight: "300",
+                color: "#303f9f",
+              }}
+            >
+              Welcome to My Books
+            </Typography>
+          </Slide>
+          <Slide left>
+            <Typography
+              variant="body1"
+              style={{
+                textAlign: "center",
+                fontFamily: "Roboto",
+                width: 650,
+                marginBottom: 65,
+                color: "#303f9f",
+              }}
+            >
+              MyBooks is a website which recommends you books according to your
+              taste. We use the approach of collaborative filtering to filter
+              out the best reads for you !
+            </Typography>
+          </Slide>
           <Input
             id="outlined-basic"
             placeholder="Search books"
@@ -187,29 +179,36 @@ export default function Home(props) {
           justifyContent: "space-between",
         }}
       >
-        <div>
-          <img src={bookCollec} style={{ width: 270, height: 152 }} />
-        </div>
-        <div>
-          <Typography
-            style={{
-              color: "#FFF",
-              fontWeight: "500",
-              fontSize: 30,
-              width: 590,
-            }}
-          >
-            {session.token ? "Start finding" : "Register and find"} the best
-            reads for you. Get books recommended based on your taste.
-          </Typography>
-        </div>
+        <Slide left>
+          <div>
+            <img src={bookCollec} style={{ width: 270, height: 152 }} />
+          </div>
+        </Slide>
+        <Slide right>
+          <div>
+            <Typography
+              style={{
+                color: "#FFF",
+                fontWeight: "500",
+                fontSize: 30,
+                width: 590,
+              }}
+            >
+              {session.token ? "Start finding" : "Register and find"} the best
+              reads for you. Get books recommended based on your taste.
+            </Typography>
+          </div>
+        </Slide>
       </div>
       {searchResults.length > 0 && (
         <div>
           <div className={classes.headContainer}>
-            <Typography variant="h5" className={classes.head}>
-              Search Results for {bookSearch}
-            </Typography>
+            <Slide left>
+              {" "}
+              <Typography variant="h5" className={classes.head}>
+                Search Results for {bookSearch}
+              </Typography>
+            </Slide>
           </div>
           <div className={classes.searchResults}>
             <Grid
@@ -223,12 +222,14 @@ export default function Home(props) {
               }}
             >
               {searchResults.map((item) => (
-                <BookCard
-                  book={item}
-                  userId={session.userId}
-                  token={session.token}
-                  history={props.history}
-                />
+                <Fade left>
+                  <BookCard
+                    book={item}
+                    userId={session.userId}
+                    token={session.token}
+                    history={props.history}
+                  />
+                </Fade>
               ))}
             </Grid>
           </div>
@@ -238,9 +239,11 @@ export default function Home(props) {
       {session.token && preferredGenresBooks.length > 0 && (
         <div>
           <div className={classes.headContainer}>
-            <Typography variant="h5" className={classes.head}>
-              Books based on your preferred genres
-            </Typography>
+            <Slide left>
+              <Typography variant="h5" className={classes.head}>
+                Books based on your preferred genres
+              </Typography>
+            </Slide>
           </div>
           <div className={classes.searchResults}>
             <Grid
@@ -254,12 +257,14 @@ export default function Home(props) {
               }}
             >
               {preferredGenresBooks.slice(0, 8).map((item) => (
-                <BookCard
-                  book={item}
-                  userId={session.userId}
-                  token={session.token}
-                  history={props.history}
-                />
+                <Fade left>
+                  <BookCard
+                    book={item}
+                    userId={session.userId}
+                    token={session.token}
+                    history={props.history}
+                  />
+                </Fade>
               ))}
             </Grid>
           </div>
@@ -269,9 +274,11 @@ export default function Home(props) {
       {session.token && crBooks.length > 0 && (
         <div>
           <div className={classes.headContainer}>
-            <Typography variant="h5" className={classes.head}>
-              Books recommended using collaborative filtering
-            </Typography>
+            <Slide left>
+              <Typography variant="h5" className={classes.head}>
+                Books recommended using collaborative filtering
+              </Typography>
+            </Slide>
           </div>
           <div className={classes.searchResults}>
             <Grid
@@ -285,12 +292,14 @@ export default function Home(props) {
               }}
             >
               {crBooks.slice(0, 8).map((item) => (
-                <BookCard
-                  book={flattenCrBook(item)}
-                  userId={session.userId}
-                  token={session.token}
-                  history={props.history}
-                />
+                <Fade left>
+                  <BookCard
+                    book={flattenCrBook(item)}
+                    userId={session.userId}
+                    token={session.token}
+                    history={props.history}
+                  />
+                </Fade>
               ))}
             </Grid>
           </div>
@@ -298,9 +307,11 @@ export default function Home(props) {
       )}
       <div>
         <div className={classes.headContainer}>
-          <Typography variant="h5" className={classes.head}>
-            Top rated books
-          </Typography>
+          <Slide left>
+            <Typography variant="h5" className={classes.head}>
+              Top rated books
+            </Typography>
+          </Slide>
         </div>
         <div className={classes.searchResults}>
           <Grid
@@ -315,9 +326,11 @@ export default function Home(props) {
 
       <div>
         <div className={classes.headContainer}>
-          <Typography variant="h5" className={classes.head}>
-            Start Rating a few books to get the best recommendations
-          </Typography>
+          <Slide left>
+            <Typography variant="h5" className={classes.head}>
+              Start Rating a few books to get the best recommendations
+            </Typography>
+          </Slide>
         </div>
         <div className={classes.searchResults}>
           <Grid
@@ -332,16 +345,16 @@ export default function Home(props) {
             }}
           >
             {topRatedBooks.length > 0 &&
-              topRatedBooks
-                .slice(0, 8)
-                .map((item) => (
+              topRatedBooks.slice(0, 8).map((item) => (
+                <Fade left>
                   <BookCard
                     book={item}
                     userId={session.userId}
                     token={session.token}
                     history={props.history}
                   />
-                ))}
+                </Fade>
+              ))}
             <Grid item justify="flex-end" xs={12} style={{}}>
               <div
                 style={{
