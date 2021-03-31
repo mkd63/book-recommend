@@ -27,6 +27,7 @@ import "../uiComponents/Carousel/Carousel.css";
 import BookCard from "../uiComponents/BookCard";
 import BookCardLong from "../uiComponents/BookCardLong.jsx";
 import Footer from "../uiComponents/Footer.jsx";
+import Fade from "react-reveal/Fade";
 
 export default function About(props) {
   const classes = useStyles();
@@ -58,30 +59,34 @@ export default function About(props) {
       <div className={classes.imageContainer}>
         <div className={classes.imageContainerCover}>
           {/*<img src={welcomeText} style={{ marginBottom: 5 }} />*/}
-          <Typography
-            style={{
-              fontSize: 80,
-              fontFamily: "Roboto",
-              fontWeight: "300",
-              color: "#fff",
-            }}
-          >
-            About My Books
-          </Typography>
-          <Typography
-            variant="body1"
-            style={{
-              textAlign: "center",
-              fontFamily: "Roboto",
-              width: 650,
-              color: "#fff",
-              marginBottom: 65,
-            }}
-          >
-            MyBooks is a website which recommends you books according to your
-            taste. We use the approach of colaborative filtering to filter out
-            the best reads for you !
-          </Typography>
+          <Fade left>
+            <Typography
+              style={{
+                fontSize: 80,
+                fontFamily: "Roboto",
+                fontWeight: "300",
+                color: "#fff",
+              }}
+            >
+              About My Books
+            </Typography>
+          </Fade>
+          <Fade left>
+            <Typography
+              variant="body1"
+              style={{
+                textAlign: "center",
+                fontFamily: "Roboto",
+                width: 650,
+                color: "#fff",
+                marginBottom: 65,
+              }}
+            >
+              MyBooks is a website which recommends you books according to your
+              taste. We use the approach of colaborative filtering to filter out
+              the best reads for you !
+            </Typography>
+          </Fade>
         </div>
       </div>
       <Grid
@@ -89,25 +94,30 @@ export default function About(props) {
         direction="column"
         style={{ padding: "5rem 5rem", color: "#fff", background: "#30638E" }}
       >
-        <Grid item xs={12} style={{ marginBottom: 15 }}>
-          <Typography variant="h4" className={classes.question}>
-            What exactly is My Books?
-          </Typography>
-          <Typography variant="body1">
-            MyBooks is a website which recommends you books according to your
-            taste. It does so based on your ratings on various books.
-          </Typography>
-        </Grid>
-        <Grid item xs={12}>
-          <Typography variant="h4" className={classes.question}>
-            How does it work?
-          </Typography>
-          <Typography variant="body1">
-            It works on the concept of collaborative filtering. According to
-            this concept, It recommends books by generating ratings for all the
-            books based on the ratings given by the user to some of the books.
-          </Typography>
-        </Grid>
+        <Fade left>
+          <Grid item xs={12} style={{ marginBottom: 15 }}>
+            <Typography variant="h4" className={classes.question}>
+              What exactly is My Books?
+            </Typography>
+            <Typography variant="body1">
+              MyBooks is a website which recommends you books according to your
+              taste. It does so based on your ratings on various books.
+            </Typography>
+          </Grid>
+        </Fade>
+        <Fade left>
+          <Grid item xs={12}>
+            <Typography variant="h4" className={classes.question}>
+              How does it work?
+            </Typography>
+            <Typography variant="body1">
+              It works on the concept of collaborative filtering. According to
+              this concept, It recommends books by generating ratings for all
+              the books based on the ratings given by the user to some of the
+              books.
+            </Typography>
+          </Grid>
+        </Fade>
       </Grid>
     </div>
   );
