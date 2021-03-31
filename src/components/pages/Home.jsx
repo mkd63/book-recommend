@@ -42,6 +42,8 @@ export default function Home(props) {
       const response = await GETSEARCH(`/books/?search=${bookSearch}`);
       const result = await response.json();
       setSearchResults(result);
+    } else if (bookSearch.length === 0) {
+      setSearchResults([]);
     }
   };
   const loadBooksByRating = async () => {
@@ -141,7 +143,12 @@ export default function Home(props) {
         <div className={classes.imageContainerCover}>
           {/*<img src={welcomeText} style={{ marginBottom: 5 }} />*/}
           <Typography
-            style={{ fontSize: 80, fontFamily: "Roboto", fontWeight: "300" }}
+            style={{
+              fontSize: 80,
+              fontFamily: "Roboto",
+              fontWeight: "300",
+              color: "#fff",
+            }}
           >
             Welcome to My Books
           </Typography>
@@ -152,6 +159,7 @@ export default function Home(props) {
               fontFamily: "Roboto",
               width: 650,
               marginBottom: 65,
+              color: "#fff",
             }}
           >
             MyBooks is a website which recommends you books according to your
@@ -245,7 +253,7 @@ export default function Home(props) {
                 justifyContent: "flex-start",
               }}
             >
-              {preferredGenresBooks.map((item) => (
+              {preferredGenresBooks.slice(0, 8).map((item) => (
                 <BookCard
                   book={item}
                   userId={session.userId}
@@ -276,7 +284,7 @@ export default function Home(props) {
                 justifyContent: "flex-start",
               }}
             >
-              {crBooks.map((item) => (
+              {crBooks.slice(0, 8).map((item) => (
                 <BookCard
                   book={flattenCrBook(item)}
                   userId={session.userId}
