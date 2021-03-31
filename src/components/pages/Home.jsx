@@ -163,7 +163,7 @@ export default function Home(props) {
             }}
           >
             MyBooks is a website which recommends you books according to your
-            taste. We use the approach of colaborative filtering to filter out
+            taste. We use the approach of collaborative filtering to filter out
             the best reads for you !
           </Typography>
           <Input
