@@ -12,6 +12,8 @@ import {
   Tooltip,
 } from "@material-ui/core";
 import GitHubIcon from "@material-ui/icons/GitHub";
+import TwitterIcon from "@material-ui/icons/Twitter";
+import FacebookIcon from "@material-ui/icons/Facebook";
 import bookLogo from "../../assets/book.png";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -28,6 +30,8 @@ import googleBooks from "../../assets/google_books.png";
 import Carousel from "./Carousel/Carousel";
 import "./Carousel/Carousel.css";
 import StarIcon from "@material-ui/icons/Star";
+
+import Fade from "react-reveal/Fade";
 
 export default function Footer(props) {
   return (
@@ -60,51 +64,55 @@ export default function Footer(props) {
             width: "15%",
           }}
         >
+          <Fade left>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexDirection: "column",
+                paddingLeft: 20,
+              }}
+            >
+              <img src={bookLogo} style={{ height: 55, width: 55 }} />
+              <h3
+                style={{
+                  fontFamily: "Roboto",
+                  fontWeight: "300",
+
+                  marginTop: 0,
+                  marginBottom: 0,
+                  fontSize: 16,
+                  color: "rgba(255, 140, 0, 1)",
+                }}
+              >
+                My Books
+              </h3>
+            </div>
+          </Fade>
+        </div>
+        <Fade>
           <div
             style={{
+              height: "100%",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              flexDirection: "column",
-              paddingLeft: 20,
+              width: "70%",
             }}
           >
-            <img src={bookLogo} style={{ height: 55, width: 55 }} />
-            <h3
-              style={{
-                fontFamily: "Roboto",
-                fontWeight: "300",
-
-                marginTop: 0,
-                marginBottom: 0,
-                fontSize: 16,
-                color: "rgba(255, 140, 0, 1)",
-              }}
-            >
-              My Books
-            </h3>
+            <Typography variant="body1" style={{ color: "#fff" }}>
+              {"© 2021 My Books All Rights Reserved "}{" "}
+              <Link
+                target="_blank"
+                href="https://www.privacypolicies.com/live/8ccca296-cb47-490a-aa96-f4109d7e0426"
+                style={{ color: "#fff" }}
+              >
+                Privacy Policy
+              </Link>
+            </Typography>
           </div>
-        </div>
-        <div
-          style={{
-            height: "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            width: "70%",
-          }}
-        >
-          <Typography variant="body1" style={{ color: "#fff" }}>
-            {"© 2021 My Books All Rights Reserved "}{" "}
-            <Link
-              target="_blank"
-              href="https://www.privacypolicies.com/live/8ccca296-cb47-490a-aa96-f4109d7e0426"
-              style={{ color: "#fff" }}
-            >
-              Privacy Policy
-            </Link>
-          </Typography>
-        </div>
+        </Fade>
         <div
           style={{
             height: "100%",
@@ -114,14 +122,30 @@ export default function Footer(props) {
             width: "10%",
           }}
         >
-          <IconButton
-            target="_blank"
-            href={"https://github.com/mkd63/book-recommend"}
-          >
-            <Tooltip title="Github">
-              <GitHubIcon style={{ color: "#fff" }} />
-            </Tooltip>
-          </IconButton>
+          <Fade right>
+            <IconButton
+              target="_blank"
+              href={"https://github.com/mkd63/book-recommend"}
+            >
+              <Tooltip title="Github">
+                <GitHubIcon style={{ color: "#fff" }} />
+              </Tooltip>
+            </IconButton>
+          </Fade>
+          <Fade right>
+            <IconButton href={"#"}>
+              <Tooltip title="Twitter">
+                <TwitterIcon style={{ color: "#fff" }} />
+              </Tooltip>
+            </IconButton>
+          </Fade>
+          <Fade right>
+            <IconButton href={"#"}>
+              <Tooltip title="Facebook">
+                <FacebookIcon style={{ color: "#fff" }} />
+              </Tooltip>
+            </IconButton>
+          </Fade>
         </div>
       </div>
     </div>
