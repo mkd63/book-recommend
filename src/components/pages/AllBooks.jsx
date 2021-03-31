@@ -27,6 +27,7 @@ import "../uiComponents/Carousel/Carousel.css";
 import BookCard from "../uiComponents/BookCard";
 import BookCardLong from "../uiComponents/BookCardLong.jsx";
 import Footer from "../uiComponents/Footer.jsx";
+import Fade from "react-reveal/Fade";
 
 export default function AllBooks(props) {
   const classes = useStyles();
@@ -96,9 +97,8 @@ export default function AllBooks(props) {
         >
           {topRatedBooks.length > 0 &&
             !console.log(topRatedBooks) &&
-            topRatedBooks
-              .slice(0, maxLimit)
-              .map((item, index) => (
+            topRatedBooks.slice(0, maxLimit).map((item, index) => (
+              <Fade left>
                 <BookCard
                   book={item}
                   key={index}
@@ -106,19 +106,27 @@ export default function AllBooks(props) {
                   token={session.token}
                   history={props.history}
                 />
-              ))}
+              </Fade>
+            ))}
           {maxLimit < topRatedBooks.length && (
             <Grid item justify="flex-end" xs={12} style={{}}>
-              <div
-                style={{
-                  width: "98%",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "flex-end",
-                }}
-              >
-                <Link onClick={() => setMaxLimit(maxLimit + 4)}>View More</Link>
-              </div>
+              <Fade left>
+                <div
+                  style={{
+                    width: "98%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "flex-end",
+                  }}
+                >
+                  <Link
+                    onClick={() => setMaxLimit(maxLimit + 4)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    View More
+                  </Link>
+                </div>
+              </Fade>
             </Grid>
           )}
         </Grid>
