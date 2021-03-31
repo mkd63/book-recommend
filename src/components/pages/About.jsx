@@ -91,7 +91,7 @@ export default function About(props) {
       >
         <Grid item xs={12} style={{ marginBottom: 15 }}>
           <Typography variant="h4" className={classes.question}>
-            What exactly is My Books ?
+            What exactly is My Books?
           </Typography>
           <Typography variant="body1">
             MyBooks is a website which recommends you books according to your
@@ -100,7 +100,7 @@ export default function About(props) {
         </Grid>
         <Grid item xs={12}>
           <Typography variant="h4" className={classes.question}>
-            How does it work ?
+            How does it work?
           </Typography>
           <Typography variant="body1">
             It works on the concept of collaborative filtering. According to
