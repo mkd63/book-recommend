@@ -19,6 +19,7 @@ import {
 import AllBooks from "./AllBooks.jsx";
 import About from "./About.jsx";
 import Footer from "../uiComponents/Footer.jsx";
+import Fade from "react-reveal/Fade";
 
 export default function Authentication(props) {
   const classes = useStyles();
@@ -92,16 +93,18 @@ export default function Authentication(props) {
   return (
     <div className={classes.root}>
       <div className={classes.header}>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <img src={bookLogo} style={{ height: 35, width: 35 }}></img>
-          <h3 className={classes.logoText}>My Books</h3>
-        </div>
+        <Fade left>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <img src={bookLogo} style={{ height: 35, width: 35 }}></img>
+            <h3 className={classes.logoText}>My Books</h3>
+          </div>
+        </Fade>
         <div className={classes.options}>
           <Link className={classes.optionText} href="/" color="inherit">
             Home
